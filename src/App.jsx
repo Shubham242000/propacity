@@ -35,9 +35,6 @@ export async function fetchData(tabId) {
 function App() {
   const [currTab, setCurrTab] = useState("entrees");
   const [toggle, setToggle] = useState(false);
-  const [tabDataToggle, setTabDataToggle] = useState(false);
-  const [formDataToggle, setFormDataToggle] = useState(false);
-  const [apiData, setApiData] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -71,34 +68,6 @@ function App() {
             if user directly lands on a url, correct tab should be selected
           </li>
         </div>
-        <div>
-          <button onClick={() => setTabDataToggle(!tabDataToggle)}>
-            show tabs data
-          </button>
-
-          <button onClick={() => setFormDataToggle(!formDataToggle)}>
-            show form data
-          </button>
-
-          <button onClick={() => setApiData(!apiData)}>
-            api call function
-          </button>
-
-          <div style={{ display: tabDataToggle ? "block" : "none" }}>
-            <h2>Tabs data</h2>
-            <pre>{JSON.stringify(tabs, null, 2)}</pre>
-          </div>
-
-          <div style={{ display: formDataToggle ? "block" : "none" }}>
-            <h2>Form data</h2>
-            <pre>{JSON.stringify(formByTab, null, 2)}</pre>
-          </div>
-
-          <div style={{ display: apiData ? "block" : "none" }}>
-            <h2>Api function</h2>
-            <pre>{fetchData.toString()}</pre>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -112,6 +81,7 @@ const Tabs = ({ tabs, currTab, setCurrTab }) => {
   const handleTabClick = (tabId) => {
     const url = new URL(window.location.href);
     url.searchParams.set("tabName", tabId);
+    // window.location.href = url; // another way of doing it.
     window.history.pushState({ tabId }, "", url);
     setCurrTab(tabId);
   };
