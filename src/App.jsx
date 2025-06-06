@@ -43,7 +43,7 @@ function App() {
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
       const tabName = url.searchParams.get("tabName");
-      setCurrTab(tabName);
+      setCurrTab(tabName || "entrees");
     }
   }, []);
 
@@ -134,8 +134,6 @@ const Tabs = ({ tabs, currTab, setCurrTab }) => {
   if (error) {
     return <h1 style={{ color: "red" }}>Error loading that data</h1>;
   }
-
-  if (!currTab) return null;
 
   return (
     <div>
