@@ -41,7 +41,12 @@ function App() {
       const url = new URL(window.location.href);
       const tabName = url.searchParams.get("tabName");
       setCurrTab(tabName || "entrees");
+      if (!tabName) {
+        url.searchParams.set("tabName", currTab);
+        window.history.pushState({}, "", url);
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -66,6 +71,11 @@ function App() {
           <li>
             {" "}
             if user directly lands on a url, correct tab should be selected
+          </li>
+          <li>
+            {" "}
+            user should not visit the url which does not have a tabName query
+            param{" "}
           </li>
         </div>
       </div>
