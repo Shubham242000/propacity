@@ -33,13 +33,19 @@ export async function fetchData(tabId) {
 }
 
 function App() {
-  const [currTab, setCurrTab] = useState(
-    new URL(window.location.href).searchParams.get("tabName")
-  );
+  const [currTab, setCurrTab] = useState("entrees");
   const [toggle, setToggle] = useState(false);
   const [tabDataToggle, setTabDataToggle] = useState(false);
   const [formDataToggle, setFormDataToggle] = useState(false);
   const [apiData, setApiData] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      const tabName = url.searchParams.get("tabName");
+      setCurrTab(tabName);
+    }
+  }, []);
 
   return (
     <div>
@@ -129,6 +135,8 @@ const Tabs = ({ tabs, currTab, setCurrTab }) => {
     return <h1 style={{ color: "red" }}>Error loading that data</h1>;
   }
 
+  if (!currTab) return null;
+
   return (
     <div>
       <div
@@ -153,12 +161,12 @@ const Tabs = ({ tabs, currTab, setCurrTab }) => {
           </div>
         ))}
       </div>
-      <h2>{tabs[currTab].content}</h2>
+      <h2>{tabs[currTab]?.content || ""}</h2>
 
       <div>
         {isLoading
           ? "loading..."
-          : data.map((d) => {
+          : data?.map((d) => {
               return (
                 <div key={d.id}>
                   <label>{d.id}</label>
